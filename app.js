@@ -11,6 +11,7 @@ var urlencodedBodyParser = bodyParser.urlencoded({extended: false});
 app.use(urlencodedBodyParser);
 var methodOverride = require('method-override');
 app.use(methodOverride('_method'));
+var addon =1;
 
 
 //config
@@ -56,25 +57,43 @@ app.post("/yourTopic", function(req, res){
 // })
 
 app.get("/yourTopic/:id", function(req, res){
-	    console.log(req.params.id);
+   // console.log(req.params.id);
+	var html = fs.readFileSync("./yourTopic.html", "utf8");
 	   	db.get("SELECT * FROM topics WHERE id=?", req.params.id , function(error,row) {
-	   		console.log(row);
-			var html = fs.readFileSync("./yourTopic.html", "utf8");
-			var rendered = ejs.render(html, row);
-			res.send(rendered);
+	   		var topRow=row;
+     			db.all("SELECT * FROM  comments WHERE topics_id = ?", req.params.id ,function(err, rows){
+				   // console.log(error);
+					 db.all("SELECT * FROM likes where like_topic_id =?", req.params.id, function(err,rowss) {
+
+					// console.log(rows);
+					var rendered = ejs.render(html, { comments: rows, topic: row, likes:rowss });
+					res.send(rendered);
+					 })
+     		})
 	});
 	   });
 
-
-app.post("/yourTopic/:id", function(req, res){
-	console.log(req.body);
-    db.get("SELECT * FROM topics INNER JOIN comments ON   topics.id = comments.topics_id", function(error, row){
-    	console.log(row);
-    	db.run("INSERT INTO comments (comment, topic_id) VALUES (?, ?)", req.body.comment, row, function(err){
-    		console.log(req.body);
-    		res.redirect("/");
-    })
-});	
+app.post("/yourTopic/:topics_id/likes", function(req, res){
+	console.log("hey"+req.params.topics_id);
+	  	db.run("INSERT INTO likes (counter, like_topic_id) VALUES (?, ?)", addon, req.params.topics_id, function(err, rows){
+			console.log("the"+addon);
+			res.redirect("/");
+		
+			addon++;
+	});
 });
+
+app.post("/yourTopic/:topics_id/comments", function(req, res){
+	// db.get("SELECT * FROM topics WHERE id=?", req.query.id, function(error, row){
+ 		console.log(req.params.topics_id);
+			db.run("INSERT INTO comments (comment, topics_id) VALUES (?, ?)", req.body.comment, req.params.topics_id, function(err){
+    			// console.log(req.body.comment);
+    			res.redirect("/");
+    
+	})
+	
+});
+
+
 
 

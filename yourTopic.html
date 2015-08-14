@@ -5,17 +5,23 @@
   <title>Forum </title>
 </head>
 <body>
-	<h2> Topic: </h2>
- 
-  <%=title %> 
+	<h3> Topic: </h3>
+       <%=topic.title %> 
+    <h3>Author:</h3>
+       <%=topic.username%>
+    <h3>Likes:</h3>
+       <%=likes.like_topic_id%>
   
-	<h2> comment : </h2>
+	<h3> Comments : </h3>
+	   <% comments.forEach(function(comment){ %>
+ 	   <%= comment.comment%><br>
+	   <%})%>
   
   
  
 
-	<form method ="POST" action="/yourTopic/:id">
-		<H3>Comments:</h3>
+	<form method ="POST" action="/yourTopic/<%= topic.id %>/comments">
+		<H3>Post Your Comment:</h3>
 		<textarea name='comment' id='comment'></textarea><br />
 		<input type="submit" value="submit comment">
     </form>
@@ -23,6 +29,12 @@
     <form method ="GET" action="/">
     	<input type="submit" value="home">
     </form>
+
+    <form method ="POST" action="/yourTopic/<%= topic.id%>/likes">
+
+    	<input type="submit" value="LikeMe">
+    </form>
+  
 
 </body>
 </html>
