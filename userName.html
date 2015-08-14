@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Forum </title>
+</head>
+<body>
+
+<form method ="GET" action="/userName">
+
+ <select name="userName" id="select-Username">
+  <% username.forEach(function(e){%>
+  <option value="username"><%=e.username %></option>
+  <%})%>
+ </select>
+  <input type="submit" value="submit">
+
+</form>
