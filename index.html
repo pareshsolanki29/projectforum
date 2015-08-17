@@ -2,19 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Forum </title>
-</head>
-<body>
-  <h1> Welcome to My Everyday Forum </h1>
+    <title>Forum </title>
 
-  <h2> Topics : </h2>
+  <style>
+ header {
+    background-color: #E6E6FA;
+    position: relative;
+    text-align:center;
+    font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype';
+    
+  }
+  body{
+    font-size: 18px;
+    font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype';
+    }
+  section{
+    max-width: 100%;
+    max-height: 100%;
+  }
+  h1{
+    position: relative;
+    text-align: center;
+    color: #4B0082;
+    font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype';
+    }
+h2{
+  position: relative;
+  color:#4B0082;
+  font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype';
+  }
+div{
+  position: relative;
+  border:1px;
+  padding: 1px;
+  float:left;
+  font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype';
+
+}
+.pure-u-1{
+   border: 1px;
+   border-color: black;
+}
+form{
+  font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype';
+
+}
+
+ 
+  </style>
+  <link rel="stylesheet" src="/forum.css" >
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+</head>
+
+<body>
+
+<div style="background-color: #FFF0F5" class="pur-g wrapper">
+
+    <header class="pure-u-1" id="header">
+      <div class="pure-u-1">
+          <h1> Welcome to The Daily Watever Everyday Forum! </h1>
+       </div>
+    </header>
+
+<section class="pure-u-1 content wrapper 1">
+      <div class="pure-g content grid">
+        <div class="pure-u-1">
+          <div class="topic">
+           <h2> Topics  </h2>
+         </div>
+        </div>
+
+
   <% rows.forEach(function(e){ %>
-  <a href="/yourTopic/<%=e.id%>"><%= e.title %></a> 
+<div  class="pure-u-1">
+  <a href="/yourTopic/<%=e.id%>"  class ="button-xlarge pure-button"><%= e.title %></a> 
+</div><br>
   <%  }) %>
-  
-    <form method="GET" action="/newTopic">
-    <input type="submit" value="New Topic">
+
+  <div class="pure-u-1">
+    <form class="pure-form" method="GET" action="/newTopic">
+      <input type="submit" class="pure-button pure-button-primary" value="New Topic">
     </form>
 
+  </div>
+  </div>
+</section>  
+</div>
 </body>
 </html>

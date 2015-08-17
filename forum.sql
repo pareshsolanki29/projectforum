@@ -8,7 +8,6 @@ id INTEGER PRIMARY KEY AUTOINCREMENT ,
 username varchar,
 title varchar,
 post varchar
-
 );
 
 CREATE TABLE comments (

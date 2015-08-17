@@ -3,7 +3,9 @@ var app = express();
 var fs = require("fs");
 var ejs = require("ejs");
 var sqlite3= require('sqlite3').verbose();
-var db = new sqlite3.Database('forums.db')
+var db = new sqlite3.Database('forums.db');
+app.use(express.static('public'));
+ 
 
 //middleware
 var bodyParser = require('body-parser');
@@ -34,10 +36,7 @@ app.get("/newTopic", function(req, res){
 	res.send(yourForm)
 });
 
-// app.get("/yourTopic/:id", function(req, res){
-// 	var newTopic= fs.readFileSync("./yourTopic.html", "utf8");
-// 	res.send(newTopic);
-// });
+
 
 app.post("/yourTopic", function(req, res){
 	// console.log(req.body);
@@ -49,23 +48,18 @@ app.post("/yourTopic", function(req, res){
 	
 });
 });
-// app.post("/yourTopic/:id", function(req, res){
-// 	db.get("SELECT * FROM topics INNER JOIN comments ON comments.topic_id = topics.id")
-// 	db.run("INSERT INTO comments (comment, topic_id) VALUES	(?, ?, ?)" , req.body.comment, function(err){
 
-// 	})
-// })
 
 app.get("/yourTopic/:id", function(req, res){
    // console.log(req.params.id);
 	var html = fs.readFileSync("./yourTopic.html", "utf8");
-	   	db.get("SELECT * FROM topics WHERE id=?", req.params.id , function(error,row) {
-	   		var topRow=row;
+	   	db.get("SELECT * FROM topics WHERE id=?", req.params.id , function(error,row){
+	   		// console.log(row);
      			db.all("SELECT * FROM  comments WHERE topics_id = ?", req.params.id ,function(err, rows){
-				   // console.log(error);
-					 db.all("SELECT * FROM likes where like_topic_id =?", req.params.id, function(err,rowss) {
+				   console.log(rows);
+					 db.all("SELECT * FROM likes where like_topic_id =?", req.params.id, function(err,rowss){
 
-					// console.log(rows);
+					// console.log(err);
 					var rendered = ejs.render(html, { comments: rows, topic: row, likes:rowss });
 					res.send(rendered);
 					 })
@@ -78,7 +72,6 @@ app.post("/yourTopic/:topics_id/likes", function(req, res){
 	  	db.run("INSERT INTO likes (counter, like_topic_id) VALUES (?, ?)", addon, req.params.topics_id, function(err, rows){
 			console.log("the"+addon);
 			res.redirect("/");
-		
 			addon++;
 	});
 });
